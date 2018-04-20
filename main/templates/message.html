@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+		  
+<div class="form-group">
+		<div class="col-xs-6 date">
+			<form class="input-group  date" id="datePicker">
+				<input type="text" class="form-control" name="date" />
+				<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+			<input type="submit" value="Submit" class="btn-primary btn bt-block"></input>
+		</form>
+	</div>
+
+	</div>
+
+<script>
+$(document).ready(function() {
+	$('#datePicker')
+		.datepicker({
+			format: 'yyyy-mm-dd'
+		})
+		.on('changeDate', function(e) {
+			// Revalidate the date field
+			$('#eventForm').formValidation('revalidateField', 'date');
+		});
+
+	$('#eventForm').formValidation({
+		framework: 'bootstrap',
+		icon: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			name: {
+				validators: {
+					notEmpty: {
+						message: 'The name is required'
+					}
+				}
+			},
+			date: {
+				validators: {
+					notEmpty: {
+						message: 'The date is required'
+					},
+					date: {
+						format: 'MM/DD/YYYY',
+						message: 'The date is not a valid'
+					}
+				}
+			}
+		}
+	});
+});
+</script>
+
+<div class="row">
+	{% for item in items %}
+	<div class="col-md-4">
+	<div class="card">
+		<div class="card-body">
+			<h4 class="card-title">{{item.patient.name}}</h4>
+			<h6 class="card-subtitle mb-2 text-muted">{{item.fee}} KWD</h6>
+			<h6 class="card-subtitle mb-2 text-muted">{{item.date}} {{item.time}}</h6>
+			<a href="#details" class="btn btn-secondary">Full Details</a>
+		</div>
+	</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock content %}
